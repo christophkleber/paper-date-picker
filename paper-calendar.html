@@ -178,6 +178,29 @@
       .flex-5 {
         @apply(--layout-flex-5);
       }
+      .selected.moreContrast{
+        background: #000000;
+      }
+      /*Serife font*/
+
+      :host(.serif), :host(.serif) .month-name.paper-calendar{
+        font-family: '"Times New Roman", Times, serif';
+      }
+      /*rtl reading direction*/
+      :host(.rtl) .month-weekdays.paper-calendar, :host(.rtl) .month-days.paper-calendar{
+        flex-direction: row-reverse;
+      }
+      /*text size*/
+      :host(.l) , :host(.l) .month-name.paper-calendar{
+        font-size: 16px;
+      }
+      :host(.xl), :host(.xl) .month-name.paper-calendar {
+        font-size: 18px;
+      }
+      :host(.xl){
+        padding: 5px 0;
+      }
+
     </style>
     <div id="calendar">
       <div id="months" on-track="_onTrack" class$="{{_contentClass}}">
@@ -315,6 +338,10 @@
         'swiped': '_onSwipe'
       },
       ready: function() {
+        var calendarReady = new Event ('calendarReady');
+        this.async(function() {
+          this.dispatchEvent(calendarReady);
+        });
         this._updateToday();
         this.currentMonth = this.date.getMonth() + 1;
         this.currentYear = this.date.getFullYear();
@@ -417,6 +444,7 @@
         });
       },
       _getDayClass: function(cssClass, date) {
+        var eventSelected = new Event ('selectedDate');
         if (date) {
           if (dateDiff(date, this.today) === 0) {
             cssClass += ' today';
@@ -425,6 +453,7 @@
             cssClass += ' selected';
             this.async(function() {
               this._updateSelection();
+              this.dispatchEvent(eventSelected);
             });
           }
         }
@@ -716,7 +745,7 @@
             return transitions[t];
           }
         }
-      }
+      },
     });
    })();
   </script>

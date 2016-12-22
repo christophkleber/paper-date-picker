@@ -147,6 +147,27 @@ styling:
           @apply(--paper-date-picker-calendar);
         }
       }
+      /*Serife font*/
+      :host(.serif) span, :host(.serif) #heading.paper-date-picker .year.paper-date-picker{
+        font-family: '"Times New Roman", Times, serif';
+      }
+      /*rtl reading direction*/
+      :host(.rtl) #datePicker.paper-date-picker{
+        flex-direction: row-reverse;
+      }
+      /*text size*/
+      :host(.l), :host(.l) #heading.paper-date-picker .year.paper-date-picker{
+        font-size: 16px;
+      }
+      :host(.l) #heading.paper-date-picker .date.paper-date-picker{
+        font-size: 38px;
+      }
+      :host(.xl), :host(.xl) #heading.paper-date-picker .year.paper-date-picker{
+        font-size: 18px;
+      }
+      :host(.xl) #heading.paper-date-picker .date.paper-date-picker{
+        font-size: 40px;
+      }
     </style>
     <iron-media-query query="{{_getMediaQuery(forceNarrow, responsiveWidth)}}" query-matches="{{_queryMatches}}"></iron-media-query>
     <div id="datePicker">
@@ -255,6 +276,24 @@ styling:
         _minYear: {
           type: Number,
           computed: '_getFullYear(minDate)'
+        },
+        textAlternatives: {
+          type: String
+        },
+        moreContrast: {
+          type: Boolean,
+          value: false
+        },
+        fontFamily: {
+          type: String
+        },
+        fontSize: {
+          type: String,
+          value: 'm'
+        },
+        readingDirection: {
+          type: String,
+          value: 'ltr'
         }
       },
       behaviors: [
@@ -267,6 +306,13 @@ styling:
         this.today = this.$.calendar.today;
         this.isTouch = 'ontouchstart' in window;
         this._selectPage('chooseDate');
+        this._changeTextAlternatives();
+        this._changeContrast();
+        this._changeFontStyle();
+        this._changeReadingDirection();
+        this._changeFontSize();
+
+
       },
       dateFormat: function() {
         return this.$.calendar.dateFormat.apply(this.$.calendar, arguments);
@@ -285,6 +331,11 @@ styling:
         if (this.$.pages.selected !== 'chooseYear') {
           this._selectPage('chooseYear');
           this.$.yearList.centerSelected();
+          console.log('year clicked');
+          var yearClicked = new Event ('yearClicked');
+          this.async(function() {
+            this.dispatchEvent(yearClicked);
+          });
         }
       },
       _selectPage: function(page) {
@@ -328,6 +379,139 @@ styling:
         this._resizing = false;
 
         this.updateStyles();
+      },
+      /**
+       * _changeTextAlternatives - Changes the web components Texts or Symbols
+       *                   depending on textAlternatives (text or symbol)
+       *
+       */
+      _changeTextAlternatives: function () {
+        if (this.textAlternatives == 'text'){
+          console.log('textAlternatives: text');
+          document.querySelectorAll('[icon="date-picker:chevron-left"]')[0].innerHTML = 'voriger Monat';
+          document.querySelectorAll('[icon="date-picker:chevron-right"]')[0].innerHTML = 'nächster Monat';
+        }
+      },
+      /**
+       * _changeContrast - Changes the web components contrast
+       *                   depending on moreContrast (true or false)
+       *
+       */
+      _changeContrast: function () {
+        if (this.moreContrast){
+          console.log('moreContrast: true');
+          document.querySelector('#heading').style.background = '#000000';
+          var paperCalendar = document.querySelector('#calendar');
+          console.log(paperCalendar);
+          paperCalendar.addEventListener('selectedDate', function (e) {
+            console.log('selectedDate triggered');
+            var selected = document.querySelector('.selected');
+            selected.className += ' moreContrast';
+
+
+          }, false);
+
+
+        }
+      },
+      /**
+       * __changeFontStyle - Changes the web components texts font family
+       *                   depending on fontFamily
+       *
+       */
+      _changeFontStyle: function (){
+        if (this.fontFamily == 'serif'){
+/*
+          console.log('fontFamily: serif');
+          document.querySelector('#calendar').style.fontFamily = '"Times New Roman", Times, serif';
+          var tempCal = document.querySelector('paper-calendar');
+          tempCal.addEventListener('calendarReady', function (e) { //Waits for Paper Calendar to be ready
+            console.log('Calendar ready in func');
+            var query = document.querySelectorAll('span.paper-calendar');
+            for (var i = 0; i < query.length; i++) {
+              query[i].style.fontFamily = '"Times New Roman", Times, serif';
+            }
+            var queryPicker = document.querySelectorAll('#heading .paper-date-picker');
+            for (var j = 0; j < queryPicker.length; j++) {
+              queryPicker[j].style.fontFamily = '"Times New Roman", Times, serif';
+            }
+          }, false);
+          var tempYearList = document.querySelector('paper-year-list');
+          console.log('This is:');
+          console.log(this);
+          console.log('that is:');
+          console.log(tempYearList);
+          tempYearList.addEventListener('yearListReady', function (e) { //Waits for Paper Year List to be ready
+            console.log('Year List Ready in Func');
+            var datePicker = document.querySelector('paper-date-picker');
+            console.log(datePicker);
+            datePicker.addEventListener('yearClicked', function (e) { //Waits for Paper Calendar to be ready
+              console.log('Calendar ready in func');
+              var query = document.querySelectorAll('span.paper-calendar');
+              for (var i = 0; i < query.length; i++) {
+                query[i].style.fontFamily = '"Times New Roman", Times, serif';
+              }
+              var queryPicker = document.querySelectorAll('#heading .paper-date-picker');
+              for (var j = 0; j < queryPicker.length; j++) {
+                queryPicker[j].style.fontFamily = '"Times New Roman", Times, serif';
+              }
+            }, false);
+            var queryYear = document.querySelectorAll('.year');
+            console.log(queryYear);
+            for (var k = 0; k < queryYear.length; k++) {
+              console.log(queryYear[k]);
+              queryYear[k].style.fontFamily = '"Times New Roman", Times, serif';
+            }
+          }, false);
+*/
+          document.querySelector('paper-date-picker').className += ' serif';
+          document.querySelector('paper-calendar').className += ' serif';
+          document.querySelector('paper-year-list').className += ' serif';
+
+
+
+        }
+      },
+      /**
+       * _changeFontSize - Changes the web components text size
+       *                   depending on fontSize (m,l,xl)
+       *
+       */
+      _changeFontSize: function () {
+        switch (this.fontSize){
+          case 'm':
+            return;
+            break;
+          case 'l':
+            document.querySelector('paper-date-picker').className += ' l';
+            document.querySelector('paper-calendar').className += ' l';
+            break;
+          case 'xl':
+            document.querySelector('paper-date-picker').className += ' xl';
+            document.querySelector('paper-calendar').className += ' xl';
+            break;
+          default:
+            break;
+        }
+      },
+      /**
+             * _changeReadingDirection - Changes the web components texts and arrangemente
+             *                   depending on readingDirection (ltr, rtl)
+             *
+             */
+      _changeReadingDirection: function () {
+        switch (this.readingDirection){
+          case 'ltr':
+            console.log('ltr');
+            break;
+          case 'rtl':
+            console.log('rtl');
+            document.querySelector('paper-date-picker').className += ' rtl';
+            document.querySelector('paper-calendar').className += ' rtl';
+
+
+            break;
+        }
       }
     });
   </script>

@@ -30,6 +30,9 @@
       iron-list {
         @apply(--layout-fit);
       }
+      :host(.serif){
+        font-family: '"Times New Roman", Times, serif';
+      }
     </style>
     <iron-list id="yearList" items="[[_years]]">
       <template>
@@ -96,6 +99,11 @@
             }
           });
         }.bind(this.$.yearList);
+        var yearListReady = new Event ('yearListReady');
+        this.async(function() {
+          console.log('Year List Ready');
+          this.dispatchEvent(yearListReady);
+        });
       },
       /**
        * Scroll in the years list to center the selected year.
