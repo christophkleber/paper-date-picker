@@ -30,6 +30,8 @@
       iron-list {
         @apply(--layout-fit);
       }
+      /*ADAPTIVE STYLES*/
+      /*FONT SERIF*/
       :host(.serif){
         font-family: '"Times New Roman", Times, serif';
       }
@@ -99,11 +101,6 @@
             }
           });
         }.bind(this.$.yearList);
-        var yearListReady = new Event ('yearListReady');
-        this.async(function() {
-          console.log('Year List Ready');
-          this.dispatchEvent(yearListReady);
-        });
       },
       /**
        * Scroll in the years list to center the selected year.

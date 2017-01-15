@@ -181,16 +181,16 @@
       .selected.moreContrast{
         background: #000000;
       }
-      /*Serife font*/
-
+      /*ADAPTIVE STYLES*/
+      /*FONT SERIF*/
       :host(.serif), :host(.serif) .month-name.paper-calendar{
         font-family: '"Times New Roman", Times, serif';
       }
-      /*rtl reading direction*/
+      /*READING DIRECTION RTL*/
       :host(.rtl) .month-weekdays.paper-calendar, :host(.rtl) .month-days.paper-calendar{
         flex-direction: row-reverse;
       }
-      /*text size*/
+      /*FONT SIZE*/
       :host(.l) , :host(.l) .month-name.paper-calendar{
         font-size: 16px;
       }
@@ -338,10 +338,6 @@
         'swiped': '_onSwipe'
       },
       ready: function() {
-        var calendarReady = new Event ('calendarReady');
-        this.async(function() {
-          this.dispatchEvent(calendarReady);
-        });
         this._updateToday();
         this.currentMonth = this.date.getMonth() + 1;
         this.currentYear = this.date.getFullYear();
