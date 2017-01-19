@@ -211,7 +211,7 @@ styling:
          */
         responsiveWidth: {
           type: String,
-          value: '560px'
+          value: '0px'
         },
         /**
          * The current locale
@@ -308,7 +308,7 @@ styling:
         this.today = this.$.calendar.today;
         this.isTouch = 'ontouchstart' in window;
         this._selectPage('chooseDate');
-        this._adaptive();
+        this.adaptive();
       },
       dateFormat: function() {
         return this.$.calendar.dateFormat.apply(this.$.calendar, arguments);
@@ -372,10 +372,10 @@ styling:
         this.updateStyles();
       },
       /**
-       * _adaptive - execute all methods to provide adaptivity.
+       * adaptive - execute all methods to provide adaptivity.
        *
        */
-      _adaptive: function(){
+      adaptive: function(){
         this._changeContrast();
         this._changeTextAlternatives();
         this._changeFontStyle();
@@ -440,7 +440,7 @@ styling:
       },
       /**
        * _changeReadingDirection - Changes the web components texts and arrangemente
-       *  Based on value of readingDirection (ltr, rtl)
+       * Based on value of readingDirection (ltr, rtl)
        */
       _changeReadingDirection: function () {
         switch (this.readingDirection){
