@@ -308,6 +308,7 @@ styling:
         this.today = this.$.calendar.today;
         this.isTouch = 'ontouchstart' in window;
         this._selectPage('chooseDate');
+        /*WHEN COMPONENT IS READY TRIGGER METHOD FOR ADAPTIVITY*/
         this.adaptive();
       },
       dateFormat: function() {

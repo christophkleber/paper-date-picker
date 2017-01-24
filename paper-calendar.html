@@ -445,6 +445,7 @@
         });
       },
       _getDayClass: function(cssClass, date) {
+        /*EVENT TO REPORT WHEN DATE IS SELECTED*/
         var eventSelected = new Event ('selectedDate');
         if (date) {
           if (dateDiff(date, this.today) === 0) {
@@ -454,6 +455,7 @@
             cssClass += ' selected';
             this.async(function() {
               this._updateSelection();
+              /*DISPATCH EVENT WHEN SELECTED DATE IS UPDATED*/
               this.dispatchEvent(eventSelected);
             });
           }
